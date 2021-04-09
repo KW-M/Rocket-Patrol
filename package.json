@@ -1,0 +1,27 @@
+{
+  "name": "rocket-patrol",
+  "version": "1.0.0",
+  "description": "Rocket Phaser 3 Example Game for 120 ",
+  "main": "script.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "parcel serve index.html",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KW-M/Rocket-Patrol.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KW-M/Rocket-Patrol/issues"
+  },
+  "homepage": "https://github.com/KW-M/Rocket-Patrol#readme",
+  "dependencies": {
+    "phaser": "^3.54.0"
+  }
+}
