@@ -16,7 +16,6 @@ let gameConfig = {
     scene: [BootScene, MenuScene, PlayScene, EndScene]
 };
 
-
 function newGame() {
     if (game) return;
     game = new Phaser.Game(gameConfig);
@@ -57,8 +56,6 @@ if (module.hot) {
 }
 
 if (!game) newGame();
-
-
 
 function adjustCanvasSize() {
     var divgame = document.getElementsByTagName("canvas")[0];

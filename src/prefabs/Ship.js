@@ -11,11 +11,11 @@ export default class Ship extends Phaser.GameObjects.Sprite {
     update() {
         this.x -= 3;
         if (this.x < 0 - this.width) {
-            this.x = this.game.config.width;
+            this.x = this.scene.game.config.width;
         }
     }
 
     reset() {
-        this.x = this.game.config.width;
+        this.x = this.scene.game.config.width;
     }
 }

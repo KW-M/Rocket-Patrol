@@ -12,7 +12,8 @@ export default class Rocket extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-
+        console.log(this);
+        // let keyLEFT = window.keyLEFT, keyRIGHT = window.keyRIGHT, keyF = window.keyF;
         if (Phaser.Input.Keyboard.JustDown(keyF)) {
             this.isFiring = true;
             this.sfxRocket.play();
@@ -23,7 +24,7 @@ export default class Rocket extends Phaser.GameObjects.Sprite {
             this.y -= this.firingSpeed;
             if (this.y < 108) {
                 this.isFiring = false;
-                this.y = this.game.config.height - borderUISize - borderPadding;
+                this.y = this.scene.game.config.height - borderUISize - borderPadding;
             }
 
         } else {
@@ -35,12 +36,12 @@ export default class Rocket extends Phaser.GameObjects.Sprite {
                 this.x += this.movementSpeed;
             }
 
-            this.x = Phaser.Math.Clamp(this.x, borderUISize + borderPadding, this.game.config.width - borderUISize - borderPadding);
+            this.x = Phaser.Math.Clamp(this.x, borderUISize + borderPadding, this.scene.game.config.width - borderUISize - borderPadding);
         }
     }
 
     reset() {
-        this.y = this.y = this.game.config.height - borderUISize - borderPadding;
+        this.y = this.y = this.scene.game.config.height - borderUISize - borderPadding;
         this.isFiring = false;
     }
 }

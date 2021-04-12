@@ -16,11 +16,16 @@ export default class PlayScene extends Phaser.Scene {
   }
   preload() {
     //preloads happen in boot
+    window.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+    window.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+    window.keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+    window.keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+
   }
   create() {
 
-    let borderUISize = 20
-    let borderPadding = 50
+    window.borderUISize = 20
+    window.borderPadding = 50
     let width = (this.game.config.width) * 1
     let height = (this.game.config.height) * 1
 
@@ -63,16 +68,16 @@ export default class PlayScene extends Phaser.Scene {
     this.ship2 = new Ship(this, 200, 200, 'spaceship', 0, 1).setOrigin(0, 0);
     this.ship3 = new Ship(this, 300, 240, 'spaceship', 0, 1).setOrigin(0, 0);
 
-    this.input.keyboard
-      .on('keydown-R', function () {
-        this.scene.restart();
-      }, this)
-      .on('keydown-Q', function () {
-        this.scene.stop().run('menu');
-      }, this)
-      .on('keydown-K', function () {
-        this.scene.stop().run('end');
-      }, this);
+    // this.input.keyboard
+    //   .on('keydown-R', function () {
+    //     this.scene.restart();
+    //   }, this)
+    //   .on('keydown-Q', function () {
+    //     this.scene.stop().run('menu');
+    //   }, this)
+    //   .on('keydown-K', function () {
+    //     this.scene.stop().run('end');
+    //   }, this);
 
     this.add.rectangle(
       0,
@@ -86,7 +91,6 @@ export default class PlayScene extends Phaser.Scene {
     this.add.rectangle(0, height - borderUISize, width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
     this.add.rectangle(0, 0, borderUISize, height, 0xFFFFFF).setOrigin(0, 0);
     this.add.rectangle(width - borderUISize, 0, borderUISize, height, 0xFFFFFF).setOrigin(0, 0);
-
 
     // score
     let scoreConfig = {
@@ -104,12 +108,6 @@ export default class PlayScene extends Phaser.Scene {
 
     this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
 
-    let keyLEFT, keyRIGHT, keyF, keyR;
-    keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
-    keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-    keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-    keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
     // 60-second play clock
     scoreConfig.fixedWidth = 0;
     this.clock = this.time.delayedCall(6000, () => {
@@ -120,6 +118,41 @@ export default class PlayScene extends Phaser.Scene {
 
   }
   update() {
-    this.starfield.tilePositionX -= 4
+    this.starfield.tilePositionX -= 4;
+
+    if (!this.gameOver) {
+      this.p1Rocket.update();
+      this.ship1.update();
+      this.ship2.update();
+      this.ship3.update();
+    }
+    if (this.gameOver && Phaser.Input.Keyboard.JustDown(window.keyR)) {
+      this.scene.restart();
+    }
+
+    let r = this.p1Rocket;
+    for (let s of [this.ship1, this.ship2, this.ship3]) {
+      if (r.x < s.x + s.width &&
+        r.x + r.width > s.x &&
+        r.y < s.y + s.height &&
+        r.y + r.height > s.y) {
+        r.reset();
+        this.destroyShip(s);
+      }
+    }
+  }
+
+  destroyShip(ship) {
+    this.sound.play('sfx_explosion');
+    ship.alpha = 0;
+    let boom = this.add.sprite(ship.x, ship.y, 'explosion');
+    boom.anims.play('explode');
+    boom.on('animationcomplete', () => {
+      ship.reset();
+      ship.alpha = 1;
+      boom.destroy();
+    });
+    this.p1Score += ship.pointValue;
+    this.scoreLeft.setText(this.p1Score);
   }
 }
