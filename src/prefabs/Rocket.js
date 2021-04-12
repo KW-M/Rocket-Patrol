@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import images from '../assets/*.png';
 
 export default class Rocket extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture) {
@@ -9,11 +8,11 @@ export default class Rocket extends Phaser.GameObjects.Sprite {
         this.firingSpeed = 4;
         this.isFiring = false;
         this.sfxRocket = scene.sound.add('sfx_rocket');
+        this.setScale(0.2)
     }
 
     update() {
-        console.log(this);
-        // let keyLEFT = window.keyLEFT, keyRIGHT = window.keyRIGHT, keyF = window.keyF;
+
         if (Phaser.Input.Keyboard.JustDown(keyF)) {
             this.isFiring = true;
             this.sfxRocket.play();

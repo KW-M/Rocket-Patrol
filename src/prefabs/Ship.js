@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import images from '../assets/*.png';
 
 export default class Ship extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame, pointValue) {

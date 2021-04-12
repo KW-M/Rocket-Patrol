@@ -54,7 +54,7 @@ export default class PlayScene extends Phaser.Scene {
     });
 
     this.starfield = this.add.tileSprite(
-      0, 0, 640, 480, 'starfield'
+      0, 0, width, height, 'starfield'
     ).setOrigin(0, 0);
 
     this.p1Rocket = new Rocket(
@@ -62,7 +62,10 @@ export default class PlayScene extends Phaser.Scene {
       width / 2,
       height - borderUISize - borderPadding,
       'rocket'
-    );
+    ).setOrigin(0.5, 0.5);
+    let r = this.p1Rocket;
+    this.debugRect = this.add.rectangle(r.x, r.y, r.width * r.scaleX, r.height * r.scaleY, 0xFF66FF).setOrigin(0.5, 0.5).setBlendMode(Phaser.BlendModes.SCREEN);
+
 
     this.ship1 = new Ship(this, 100, 120, 'spaceship', 0, 1).setOrigin(0, 0);
     this.ship2 = new Ship(this, 200, 200, 'spaceship', 0, 1).setOrigin(0, 0);
@@ -96,8 +99,8 @@ export default class PlayScene extends Phaser.Scene {
     let scoreConfig = {
       fontFamily: 'Courier',
       fontSize: '28px',
-      backgroundColor: '#F3B141',
-      color: '#843605',
+      backgroundColor: '#000000',
+      color: '#FFFF66',
       align: 'right',
       padding: {
         top: 5,
@@ -106,11 +109,11 @@ export default class PlayScene extends Phaser.Scene {
       fixedWidth: 100
     };
 
-    this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
+    this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 1, this.p1Score, scoreConfig);
 
     // 60-second play clock
     scoreConfig.fixedWidth = 0;
-    this.clock = this.time.delayedCall(6000, () => {
+    this.clock = this.time.delayedCall(8000, () => {
       this.add.text(width / 2, height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5);
       this.add.text(width / 2, height / 2 + 64, '(R)estart', scoreConfig).setOrigin(0.5);
       this.gameOver = true;
@@ -130,13 +133,17 @@ export default class PlayScene extends Phaser.Scene {
       this.scene.restart();
     }
 
-    let r = this.p1Rocket;
+    this.debugRect.setAngle(this.debugRect.angle + 4)
+    this.p1Rocket.setAngle(this.p1Rocket.angle - 4)
+    this.debugRect.x = this.p1Rocket.x;
+    this.debugRect.y = this.p1Rocket.y;
+    let r = this.debugRect;
     for (let s of [this.ship1, this.ship2, this.ship3]) {
       if (r.x < s.x + s.width &&
         r.x + r.width > s.x &&
         r.y < s.y + s.height &&
         r.y + r.height > s.y) {
-        r.reset();
+        this.p1Rocket.reset();
         this.destroyShip(s);
       }
     }
