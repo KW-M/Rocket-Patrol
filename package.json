@@ -23,5 +23,9 @@
   "homepage": "https://github.com/KW-M/Rocket-Patrol#readme",
   "dependencies": {
     "phaser": "^3.54.0"
+  },
+  "devDependencies": {
+    "cssnano": "^5.0.0",
+    "postcss": "^8.2.10"
   }
 }
