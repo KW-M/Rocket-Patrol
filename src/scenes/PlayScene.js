@@ -59,13 +59,21 @@ export default class PlayScene extends Phaser.Scene {
 
     this.p1Rocket = new Rocket(
       this,
-      width / 2,
+      width / 2 - 10,
+      height - borderUISize - borderPadding,
+      'lettuce'
+    ).setOrigin(0.5, 0.5);
+    let r = this.p1Rocket;
+    this.p1debugRect = this.add.rectangle(r.x, r.y, r.width * r.scaleX, r.height * r.scaleY, 0xFF66FF).setOrigin(0.5, 0.5).setBlendMode(Phaser.BlendModes.SCREEN);
+
+    this.p1Rocket = new Rocket(
+      this,
+      width / 2 + 10,
       height - borderUISize - borderPadding,
       'rocket'
     ).setOrigin(0.5, 0.5);
     let r = this.p1Rocket;
-    this.debugRect = this.add.rectangle(r.x, r.y, r.width * r.scaleX, r.height * r.scaleY, 0xFF66FF).setOrigin(0.5, 0.5).setBlendMode(Phaser.BlendModes.SCREEN);
-
+    this.p1debugRect = this.add.rectangle(r.x, r.y, r.width * r.scaleX, r.height * r.scaleY, 0xFF66FF).setOrigin(0.5, 0.5).setBlendMode(Phaser.BlendModes.SCREEN);
 
     this.ship1 = new Ship(this, 100, 120, 'spaceship', 0, 1).setOrigin(0, 0);
     this.ship2 = new Ship(this, 200, 200, 'spaceship', 0, 1).setOrigin(0, 0);
