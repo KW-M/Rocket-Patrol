@@ -59,7 +59,7 @@ if (!game) newGame();
 
 function adjustCanvasSize() {
     var divgame = document.getElementsByTagName("canvas")[0];
-    let size = Math.min(window.innerWidth, window.innerHeight)
+    let size = Math.min(window.innerWidth, window.innerHeight) - 6;
     divgame.style.width = size + "px";
     divgame.style.height = size + "px";
 }
